@@ -1,0 +1,22 @@
+= gradle-module-path-decision
+Pedro Lamarão <pedro.lamarao@gmail.com>
+
+This simple project should respond to `./gradlew run` with `Hello World!`.
+
+Instead, it raises `NoSuchElementException`.
+
+The cause is Gradle's decision to put `api` and `impl` in the class path instead of the module path.
+Gradle seems to make this decision based on the fact that `app` is not a module.
+
+This decision breaks the service loader mechanism.
+`impl` declares it's provided services in its module definition.
+It is meant to be put in the module path, not the class path.
+
+One may be tempted to avoid this problem by redeclaring `impl` 's services in `META-INF/services`.
+This way, when `impl` be put in the class path, the service loader is satisfied.
+
+However, `api` module designers intended for the `spi` package to have restricted access to `impl` only.
+Allowing `api` and `impl` in the class path makes this restriction meaningless.
+To enforce this restriction, `api` and `impl` must require the module path.
+
+Currently, one cannot apply this kind of architecture with non-modular Gradle applications.
