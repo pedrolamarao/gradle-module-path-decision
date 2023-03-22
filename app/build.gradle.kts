@@ -11,6 +11,8 @@ dependencies {
     runtimeOnly(project(":impl"))
 }
 
+java.modularity.inferModulePath.set(true)
+
 tasks.named<Jar>("jar").configure {
     manifest.attributes["Automatic-Module-Name"] = "br.dev.pedrolamarao.app"
 }
