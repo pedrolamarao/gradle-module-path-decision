@@ -8,5 +8,5 @@ allprojects {
 }
 
 tasks.named<Wrapper>("wrapper").configure() {
-    this.gradleVersion = "8.0.2"
+    this.gradleVersion = "8.1-rc-1"
 }
